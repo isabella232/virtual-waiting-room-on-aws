@@ -1,4 +1,4 @@
-**[🚀 Solution Landing Page](https://aws.amazon.com/solutions/implementations/virtual-waiting-room/)** | **[🚧 Feature request](https://github.com/aws-solutions/aws-virtual-waiting-room/issues/new?assignees=&labels=feature-request%2C+enhancement&template=feature_request.md&title=)** | **[🐛 Bug Report](https://github.com/aws-solutions/aws-virtual-waiting-room/issues/new?assignees=&labels=bug%2C+triage&template=bug_report.md&title=)**
+**[🚀 Solution Landing Page](https://aws.amazon.com/solutions/implementations/aws-virtual-waiting-room/)** | **[📜 Solution Implementation Guide](https://docs.aws.amazon.com/solutions/latest/aws-virtual-waiting-room/welcome.html)** | **[🚧 Feature request](https://github.com/aws-solutions/aws-virtual-waiting-room/issues/new?assignees=&labels=feature-request%2C+enhancement&template=feature_request.md&title=)** | **[🐛 Bug Report](https://github.com/aws-solutions/aws-virtual-waiting-room/issues/new?assignees=&labels=bug%2C+triage&template=bug_report.md&title=)**
 
 Note: If you want to use the solution without building from source, navigate to Solution Landing Page
 
@@ -23,10 +23,11 @@ export DIST_OUTPUT_BUCKET=<MY-BUCKET-NAME> # bucket where customized code will r
 export SOLUTION_NAME=my-solution-name
 export VERSION=my-version # version number for the customized code
 ```
-_Note:_ You would have to create an S3 bucket with the prefix '<MY-BUCKET-NAME>-<AWS-REGION>'; <AWS-REGION> is where you are testing the customized solution. Also, the assets in bucket should be publicly accessible.
+_Note:_ You would have to create an S3 bucket with the prefix '<MY-BUCKET-NAME>-<AWS-REGION>'; <AWS-REGION> is where you are testing the customized solution. **Also, the assets in bucket should be publicly accessible.**
 
 * Now build the distributable:
 ```
+cd deployment
 chmod +x ./build-s3-dist.sh 
 ./build-s3-dist.sh $DIST_OUTPUT_BUCKET $SOLUTION_NAME $VERSION 
 ```
@@ -34,7 +35,7 @@ chmod +x ./build-s3-dist.sh
 * Deploy the distributable to an Amazon S3 bucket in your account. The head-bucket command verifies that your account owns the bucket. _Note:_ you must have the AWS Command Line Interface installed.
 ```
 aws s3api head-bucket --bucket <MY-BUCKET-NAME>-<AWS-REGION> --expected-bucket-owner <AWS-ACCOUNT-ID>
-aws s3 cp ./dist/ s3://<MY-BUCKET-NAME>-<AWS-REGION>/$SOLUTION_NAME/$VERSION/ --recursive --acl bucket-owner-full-control --profile aws-cred-profile-name 
+aws s3 sync regional-s3-assets/ s3://<MY-BUCKET-NAME>-<AWS-REGION>/$SOLUTION_NAME/$VERSION/  
 ```
 
 * Get the link of the solution template uploaded to your Amazon S3 bucket.
